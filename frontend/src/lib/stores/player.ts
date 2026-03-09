@@ -7,13 +7,13 @@ interface AudioFile {
 }
 
 interface PlayerState {
-  track: AudioFile | null; // currently loaded track
-  queue: AudioFile[]; // ordered playlist (snapshot of filteredTracks at time of play)
-  queueIndex: number; // current position in queue (-1 if nothing loaded)
-  paused: boolean; // true = paused, false = playing
-  currentTime: number; // seconds, updated by <audio> timeupdate events
-  duration: number; // seconds, set on loadedmetadata
-  volume: number; // 0.0 – 1.0
+  track: AudioFile | null;
+  queue: AudioFile[];
+  queueIndex: number;
+  paused: boolean;
+  currentTime: number;
+  duration: number;
+  volume: number;
 }
 
 const initial: PlayerState = {
@@ -78,7 +78,7 @@ export function toggleMute() {
 }
 
 export function handleEnded() {
-  nextTrack();
+    togglePause();
 }
 
 export function audioUrl(track: AudioFile): string {
