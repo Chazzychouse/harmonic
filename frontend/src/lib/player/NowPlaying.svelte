@@ -24,6 +24,11 @@
     }
   }
 
+  function onAudioError() {
+    const err = audioEl?.error;
+    console.error("[audio] error code:", err?.code, "message:", err?.message, "src:", audioEl?.src);
+  }
+
   $: paused = $player.paused;
   $: if (audioEl) {
     if (paused) audioEl.pause();
@@ -96,6 +101,7 @@
     on:timeupdate={onTimeUpdate}
     on:loadedmetadata={onLoadedMetadata}
     on:ended={nextTrack}
+    on:error={onAudioError}
     preload="metadata"
   ></audio>
 

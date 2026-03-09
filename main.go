@@ -2,6 +2,8 @@ package main
 
 import (
 	"embed"
+	"log"
+	"net"
 	"net/http"
 
 	"harmonic/internal/fs"
@@ -16,29 +18,28 @@ import (
 var assets embed.FS
 
 func main() {
-	fsService := fs.NewFsService()
+	// Start a dedicated HTTP server for media (audio + art).
+	// The wails:// custom scheme is not supported by GStreamer, so we must
+	// serve media over a real http:// address that souphttpsrc can fetch.
+	mediaMux := http.NewServeMux()
+	mediaMux.Handle("/audio", fs.NewAudioHandler())
+	mediaMux.Handle("/art", tags.NewArtHandler())
 
-	audioHandler := fs.NewAudioHandler()
-	artHandler := tags.NewArtHandler()
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		log.Fatal("media server:", err)
+	}
+	go http.Serve(ln, mediaMux) //nolint:errcheck
 
-	err := wails.Run(&options.App{
+	mediaPort := ln.Addr().(*net.TCPAddr).Port
+	fsService := fs.NewFsService(mediaPort)
+
+	err = wails.Run(&options.App{
 		Title:  "harmonic",
 		Width:  1024,
 		Height: 768,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
-			Middleware: func(next http.Handler) http.Handler {
-				return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-					switch r.URL.Path {
-					case "/audio":
-						audioHandler.ServeHTTP(w, r)
-					case "/art":
-						artHandler.ServeHTTP(w, r)
-					default:
-						next.ServeHTTP(w, r)
-					}
-				})
-			},
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
 		OnStartup:        fsService.SetContext,

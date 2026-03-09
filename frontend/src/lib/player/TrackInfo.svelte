@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { artUrl } from "../stores/player";
   export let title: string;
   export let ext: string;
   export let artist: string = "";
@@ -10,7 +11,7 @@
   {#if hasArt}
     <img
       class="np-art"
-      src="/art?path={encodeURIComponent(filePath)}"
+      src={artUrl(filePath)}
       alt=""
     />
   {:else}

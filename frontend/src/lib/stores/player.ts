@@ -1,4 +1,12 @@
 import { writable } from "svelte/store";
+import { MediaPort } from "../../../wailsjs/go/fs/FsService";
+
+let mediaBase = "";
+
+export async function initMedia(): Promise<void> {
+  const port = await MediaPort();
+  mediaBase = `http://127.0.0.1:${port}`;
+}
 
 interface AudioFile {
   title: string;
@@ -84,5 +92,9 @@ export function toggleMute() {
 }
 
 export function audioUrl(track: AudioFile): string {
-  return "/audio?path=" + encodeURIComponent(track.file_path);
+  return `${mediaBase}/audio?path=${encodeURIComponent(track.file_path)}`;
+}
+
+export function artUrl(filePath: string): string {
+  return `${mediaBase}/art?path=${encodeURIComponent(filePath)}`;
 }
