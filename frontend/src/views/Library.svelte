@@ -152,14 +152,6 @@
     min-width: 0;
   }
 
-  .sidebar {
-    width: 300px;
-    flex-shrink: 0;
-    border-left: 1px solid var(--border);
-    overflow-y: auto;
-    padding: var(--space-4);
-  }
-
   .list-view {
     flex: 1;
     display: flex;
