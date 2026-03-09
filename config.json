@@ -1,0 +1,11 @@
+{
+  "device_id": "",
+  "library_path": "",
+  "s3": {
+    "bucket": "chazzy-dj-library",
+    "region": "us-east-1",
+    "endpoint": "",
+    "access_key": "",
+    "secret_key": ""
+  }
+}
