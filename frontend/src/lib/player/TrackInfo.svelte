@@ -1,10 +1,25 @@
 <script lang="ts">
   export let title: string;
   export let ext: string;
+  export let artist: string = "";
+  export let filePath: string = "";
+  export let hasArt: boolean = false;
 </script>
 
 <div class="np-info">
-  <span class="np-title">{title}</span>
+  {#if hasArt}
+    <img
+      class="np-art"
+      src="/art?path={encodeURIComponent(filePath)}"
+      alt=""
+    />
+  {:else}
+    <div class="np-art-placeholder">♪</div>
+  {/if}
+  <div class="np-text">
+    <span class="np-title">{title}</span>
+    <span class="np-artist">{artist || "Unknown Artist"}</span>
+  </div>
   <span class="np-ext">
     <span class="ext-badge ext-{ext}">
       {ext.toUpperCase()}
@@ -21,10 +36,47 @@
     min-width: 0;
   }
 
+  .np-art {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .np-art-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+    flex-shrink: 0;
+  }
+
+  .np-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+    gap: 2px;
+  }
+
   .np-title {
     font-size: var(--text-sm);
     font-weight: 500;
     color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .np-artist {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

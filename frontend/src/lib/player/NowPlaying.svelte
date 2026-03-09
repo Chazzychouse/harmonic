@@ -99,7 +99,13 @@
     preload="metadata"
   ></audio>
 
-  <TrackInfo title={$player.track.title} ext={$player.track.ext} />
+  <TrackInfo
+    title={$player.track.title}
+    ext={$player.track.ext}
+    artist={$player.track.artist}
+    filePath={$player.track.file_path}
+    hasArt={$player.track.has_art}
+  />
 
   <TransportControls
     paused={$player.paused}

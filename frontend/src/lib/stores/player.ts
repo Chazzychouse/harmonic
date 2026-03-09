@@ -2,6 +2,16 @@ import { writable } from "svelte/store";
 
 interface AudioFile {
   title: string;
+  artist: string;
+  album: string;
+  album_artist: string;
+  genre: string;
+  year: number;
+  track_num: number;
+  track_total: number;
+  disc_num: number;
+  disc_total: number;
+  has_art: boolean;
   file_path: string;
   ext: string;
 }

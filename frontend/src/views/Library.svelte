@@ -11,6 +11,16 @@
 
   interface AudioFile {
     title: string;
+    artist: string;
+    album: string;
+    album_artist: string;
+    genre: string;
+    year: number;
+    track_num: number;
+    track_total: number;
+    disc_num: number;
+    disc_total: number;
+    has_art: boolean;
     file_path: string;
     ext: string;
   }
@@ -30,6 +40,8 @@
       ? tracks.filter(
           (t) =>
             t.title.toLowerCase().includes(q) ||
+            t.artist.toLowerCase().includes(q) ||
+            t.album.toLowerCase().includes(q) ||
             t.ext.toLowerCase().includes(q),
         )
       : tracks;
@@ -99,7 +111,7 @@
         <div class="col-header">
           <span class="col-num">#</span>
           <span class="col-title">Title</span>
-          <span class="col-path">Path</span>
+          <span class="col-artist">Artist</span>
           <span class="col-ext">Format</span>
         </div>
 
@@ -114,6 +126,7 @@
               <TrackRow
                 index={i}
                 title={track.title}
+                artist={track.artist}
                 filePath={track.file_path}
                 ext={track.ext}
                 selected={selectedIndex === i}

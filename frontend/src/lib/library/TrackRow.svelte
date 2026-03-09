@@ -4,6 +4,7 @@
 
   export let index: number;
   export let title: string;
+  export let artist: string = "";
   export let filePath: string;
   export let ext: string;
   export let selected: boolean = false;
@@ -40,7 +41,7 @@
     {/if}
   </span>
   <span class="col-title track-title">{title}</span>
-  <span class="col-path track-path">{filePath}</span>
+  <span class="col-artist track-artist">{artist || "—"}</span>
   <span class="col-ext track-ext">
     <span class="ext-badge ext-{ext}">{ext.toUpperCase()}</span>
   </span>
@@ -118,7 +119,7 @@
     font-weight: 500;
   }
 
-  .track-path {
+  .track-artist {
     font-size: var(--text-xs);
     color: var(--text-secondary);
   }
