@@ -67,10 +67,6 @@ export function prevTrack() {
   });
 }
 
-export function seek(time: number) {
-  player.update(s => ({ ...s, currentTime: time }));
-}
-
 export function setVolume(vol: number) {
   player.update(s => ({ ...s, volume: Math.max(0, Math.min(1, vol)) }));
   localStorage.setItem("harmonic:volume", Math.max(0, Math.min(1, vol)).toString());
@@ -85,10 +81,6 @@ export function toggleMute() {
     }
     return { ...s, volume: _preMuteVolume };
   });
-}
-
-export function handleEnded() {
-    togglePause();
 }
 
 export function audioUrl(track: AudioFile): string {

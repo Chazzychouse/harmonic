@@ -13,7 +13,6 @@
 }
 
 :root {
-  /* Base surfaces — solid, no glass */
   --bg:            #09090b;
   --surface:       #111113;
   --surface-2:     #161618;
@@ -21,24 +20,14 @@
   --border:        #222226;
   --border-strong: #2e2e33;
 
-  /* Map old glass vars to solid equivalents so existing components just work */
-  --glass-bg:        #111113;
-  --glass-bg-hover:  #1c1c1f;
-  --glass-border:    #222226;
-  --glass-highlight: none;   /* was inset glow — gone */
-  --blur:            none;   /* no backdrop-filter */
-
-  /* Philadelphia Phillies maroon × JetBrains ReSharper gradient */
   --primary:       #a0002b;
   --primary-hover: #b8003a;
   --primary-glow:  rgba(160, 0, 43, 0.45);
 
-  /* The gradient: deep maroon → Phillies red → vivid crimson → hot fuchsia */
   --gradient:      linear-gradient(135deg, #6b0018 0%, #a0002b 28%, #d4145a 62%, #ff2d78 100%);
   --gradient-h:    linear-gradient(135deg, #7e001e 0%, #b8003a 28%, #e01c68 62%, #ff4589 100%);
   --gradient-glow: rgba(212, 20, 90, 0.3);
 
-  /* Accent — the bright fuchsia end of the gradient */
   --accent:      #ff2d78;
   --accent-glow: rgba(255, 45, 120, 0.35);
 
@@ -48,9 +37,7 @@
 
   --danger:       #ef4444;
   --danger-hover: #dc2626;
-  --success:      #22c55e;
 
-  /* Typography */
   --font-family: 'JetBrains Mono', monospace;
   --text-xs: 11px;
   --text-sm: 13px;
@@ -58,7 +45,6 @@
   --text-lg: 19px;
   --text-xl: 23px;
 
-  /* Spacing */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -68,12 +54,10 @@
   --space-7: 28px;
   --space-8: 32px;
 
-  /* Border Radius */
   --radius-sm: 5px;
   --radius-md: 8px;
   --radius-lg: 12px;
 
-  /* Transitions */
   --transition: all 140ms ease;
 }
 
