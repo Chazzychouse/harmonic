@@ -7,6 +7,7 @@
   export let filePath: string;
   export let ext: string;
   export let selected: boolean = false;
+  export let playing: boolean = false;
   export let even: boolean = false;
   export let delay: number = 0;
 
@@ -25,12 +26,13 @@
   aria-selected={selected}
   tabindex="0"
   on:click={() => dispatch('select')}
+  on:dblclick={() => dispatch('play')}
   on:keydown={handleKeydown}
   in:fly={{ y: 4, duration: 120, delay }}
 >
   <span class="col-num track-num">
-    {#if selected}
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="playing-icon">
+    {#if playing}
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" class="playing-icon" class:accent={selected}>
         <polygon points="5 3 19 12 5 21 5 3"/>
       </svg>
     {:else}
@@ -103,6 +105,10 @@
   }
 
   .playing-icon {
+    color: var(--text-secondary);
+  }
+
+  .playing-icon.accent {
     color: var(--accent);
   }
 

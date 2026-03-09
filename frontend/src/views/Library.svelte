@@ -7,6 +7,7 @@
   import TrackListToolbar from "../lib/library/TrackListToolbar.svelte";
   import TrackRow from "../lib/library/TrackRow.svelte";
   import { ScanDirectory } from "../../wailsjs/go/fs/FsService";
+  import { player, playTrack } from "../lib/stores/player";
 
   interface AudioFile {
     title: string;
@@ -76,7 +77,7 @@
 />
 
 <!-- Main Library View -->
-<div class="library">
+<div class="library" class:has-player={$player.track !== null}>
   <div class="library-main">
     {#if !folderPath && !scanning}
       <EmptyState on:add={openPicker} />
@@ -116,9 +117,11 @@
                 filePath={track.file_path}
                 ext={track.ext}
                 selected={selectedIndex === i}
+                playing={$player.track?.file_path === track.file_path}
                 even={i % 2 === 0}
                 delay={Math.min(i * 8, 300)}
                 on:select={() => selectTrack(i)}
+                on:play={() => playTrack(track, filteredTracks, i)}
               />
             {/each}
           {/if}
@@ -131,9 +134,14 @@
 <style>
   .library {
     height: calc(100vh - 52px);
+    transition: height 200ms ease;
     display: flex;
     flex-direction: row;
     overflow: hidden;
+  }
+
+  .library.has-player {
+    height: calc(100vh - 52px - 64px);
   }
 
   .library-main {

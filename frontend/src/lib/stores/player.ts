@@ -1,0 +1,86 @@
+import { writable } from "svelte/store";
+
+interface AudioFile {
+  title: string;
+  file_path: string;
+  ext: string;
+}
+
+interface PlayerState {
+  track: AudioFile | null; // currently loaded track
+  queue: AudioFile[]; // ordered playlist (snapshot of filteredTracks at time of play)
+  queueIndex: number; // current position in queue (-1 if nothing loaded)
+  paused: boolean; // true = paused, false = playing
+  currentTime: number; // seconds, updated by <audio> timeupdate events
+  duration: number; // seconds, set on loadedmetadata
+  volume: number; // 0.0 – 1.0
+}
+
+const initial: PlayerState = {
+  track: null,
+  queue: [],
+  queueIndex: -1,
+  paused: true,
+  currentTime: 0,
+  duration: 0,
+  volume: parseFloat(localStorage.getItem("harmonic:volume") ?? "0.8"),
+};
+
+export const player = writable<PlayerState>(initial);
+
+export function playTrack(track: AudioFile, queue: AudioFile[], index: number) {
+  player.update(s => ({ ...s, track, queue, queueIndex: index, paused: false, currentTime: 0, duration: 0 }));
+}
+
+
+export function togglePause() {
+  player.update(s => s.track ? { ...s, paused: !s.paused } : s);
+}
+
+export function nextTrack() {
+  player.update(s => {
+    if (s.queueIndex < s.queue.length - 1) {
+      const i = s.queueIndex + 1;
+      return { ...s, queueIndex: i, track: s.queue[i], currentTime: 0, duration: 0 };
+    }
+    return { ...s, track: null, paused: true, currentTime: 0, duration: 0, queueIndex: -1 };
+  });
+}
+
+export function prevTrack() {
+  player.update(s => {
+    if (s.queueIndex > 0) {
+      const i = s.queueIndex - 1;
+      return { ...s, queueIndex: i, track: s.queue[i], currentTime: 0, duration: 0 };
+    }
+    return s;
+  });
+}
+
+export function seek(time: number) {
+  player.update(s => ({ ...s, currentTime: time }));
+}
+
+export function setVolume(vol: number) {
+  player.update(s => ({ ...s, volume: Math.max(0, Math.min(1, vol)) }));
+  localStorage.setItem("harmonic:volume", Math.max(0, Math.min(1, vol)).toString());
+}
+
+let _preMuteVolume = 0.8;
+export function toggleMute() {
+  player.update(s => {
+    if (s.volume > 0) {
+      _preMuteVolume = s.volume;
+      return { ...s, volume: 0 };
+    }
+    return { ...s, volume: _preMuteVolume };
+  });
+}
+
+export function handleEnded() {
+  nextTrack();
+}
+
+export function audioUrl(track: AudioFile): string {
+  return "/audio?path=" + encodeURIComponent(track.file_path);
+}
